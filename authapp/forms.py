@@ -38,3 +38,9 @@ class UserRegisterForm (UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'first_name', 'last_name', 'password1', 'password2')
+
+    def clean_first_name(self):
+        data = self.cleaned_data['first_name']
+        if len(data) < 3:
+            print('Сработал валидатор')
+            raise forms.ValidationError("Имя меньше 3 символов")
