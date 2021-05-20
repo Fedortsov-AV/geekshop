@@ -53,3 +53,11 @@ def admin_user_remove(request, user_id):
     user.is_active = False
     user.save()
     return HttpResponseRedirect(reverse('admin_staff:admin_users_read'))
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_user_restore(request, user_id):
+    user = User.objects.get(id=user_id)
+    user.is_active = True
+    user.save()
+    return HttpResponseRedirect(reverse('admin_staff:admin_users_read'))
