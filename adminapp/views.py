@@ -5,6 +5,13 @@ from django.urls import reverse
 
 from authapp.models import User
 from adminapp.forms import UserAdminRegisterForm, UserAdminProfileForm
+from mainapp.models import Product
+
+
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
+def admin_products_read(request):
+    context ={'products': Product.objects.all()}
+    return render(request, "adminapp/admin-products-read.html", context)
 
 
 @user_passes_test(lambda u: u.is_superuser)

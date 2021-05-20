@@ -1,0 +1,54 @@
+{% extends 'adminapp/base.html' %}
+{% block content %}
+<h1 class="mt-4">Товары</h1>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table mr-1"></i>
+                        Пользователи
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>Название</th>
+                                    <th>Описание</th>
+                                    <th>Цена</th>
+                                    <th>Количество</th>
+                                    <th>Категория</th>
+                                </tr>
+                                </thead>
+                                <tfoot>
+                                <tr>
+                                    <th>Название</th>
+                                    <th>Описание</th>
+                                    <th>Цена</th>
+                                    <th>Количество</th>
+                                    <th>Категория</th>
+                                </tr>
+                                </tfoot>
+                                <tbody>
+                                {% for product in products %}
+                                <tr>
+                                    <td><a href="{% url 'admin_staff:admin_users_update' product.id %}" style="color: dodgerblue">{{ product.name }}</a></td>
+                                    <td>{{ product.description }}</td>
+                                    <td>{{ product.price }}</td>
+                                    <td>{{ product.quantity }}</td>
+                                    <td>{{ product.category }}</td>
+                                </tr>
+                                {% endfor %}
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{% url 'admin_staff:admin_users_create' %}">
+                            <button class="btn btn-success">Создать пользователя</button>
+                        </a>
+                    </div>
+                </div>
+{% endblock %}
+
+
