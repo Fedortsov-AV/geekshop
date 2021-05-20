@@ -30,7 +30,7 @@
                                 <tbody>
                                 {% for product in products %}
                                 <tr>
-                                    <td><a href="{% url 'admin_staff:admin_users_update' product.id %}" style="color: dodgerblue">{{ product.name }}</a></td>
+                                    <td><a href="{% url 'admin_staff:admin_products_update' product.id %}" style="color: dodgerblue">{{ product.name }}</a></td>
                                     <td>{{ product.description }}</td>
                                     <td>{{ product.price }}</td>
                                     <td>{{ product.quantity }}</td>
@@ -44,8 +44,8 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <a href="{% url 'admin_staff:admin_users_create' %}">
-                            <button class="btn btn-success">Создать пользователя</button>
+                        <a href="{% url 'admin_staff:admin_products_create' %}">
+                            <button class="btn btn-success">Создать товар</button>
                         </a>
                     </div>
                 </div>

@@ -2,6 +2,15 @@ from django import forms
 
 from authapp.forms import UserRegisterForm, UserProfileForm
 from authapp.models import User
+from mainapp.models import Product
+
+
+class ProductAdminForm(forms.ModelForm):
+    image = forms.ImageField(widget=forms.FileInput(attrs={'class': 'custom-file-input'}), required=False)
+
+    class Meta:
+        model = Product
+        fields = ('name', 'image', 'description', 'price', 'quantity', 'category')
 
 
 class UserAdminRegisterForm(UserRegisterForm):

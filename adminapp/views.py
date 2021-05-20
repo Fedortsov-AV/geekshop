@@ -4,14 +4,49 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from authapp.models import User
-from adminapp.forms import UserAdminRegisterForm, UserAdminProfileForm
+from adminapp.forms import UserAdminRegisterForm, UserAdminProfileForm, ProductAdminForm
 from mainapp.models import Product
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_products_remove(request, product_id):
+    product = Product.objects.get(id=product_id)
+    product.delete()
+    return HttpResponseRedirect(reverse('admin_staff:admin_products_read'))
+
+
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
+def admin_products_update(request, product_id):
+    selected_product = Product.objects.get(id=product_id)
+    if request.method == 'POST':
+        form = ProductAdminForm(data=request.POST, instance=selected_product, files=request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('admin_staff:admin_products_read'))
+    else:
+        form = ProductAdminForm(instance=selected_product)
+
+    context = {'form': form, 'selected_product': selected_product}
+    return render(request, 'adminapp/admin-products-update-delete.html', context)
 
 
 @user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def admin_products_read(request):
-    context ={'products': Product.objects.all()}
+    context = {'products': Product.objects.all()}
     return render(request, "adminapp/admin-products-read.html", context)
+
+
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
+def admin_products_create(request):
+    if request.method == 'POST':
+        form = ProductAdminForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('admin_staff:admin_products_read'))
+    else:
+        form = ProductAdminForm()
+    context = {'form': form}
+    return render(request, 'adminapp/admin-product-create.html', context)
 
 
 @user_passes_test(lambda u: u.is_superuser)
