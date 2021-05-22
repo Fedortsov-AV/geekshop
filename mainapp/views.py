@@ -12,11 +12,15 @@ def index(request):
     return render(request, 'mainapp/index.html', context)
 
 
-def products(request):
+def products(request, category_id=None):
     context = {
         'title': 'GeekShop - каталог',
-        'products': Product.objects.all(),
         'category': ProductCategory.objects.all(),
     }
+    if category_id:
+        product = Product.objects.filter(category_id=category_id)
+        context.update({'products': product})
+    else:
+        context.update({'products': Product.objects.all()})
 
     return render(request, 'mainapp/products.html', context)
