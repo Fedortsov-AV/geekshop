@@ -1,5 +1,3 @@
-import json
-
 from django.shortcuts import render
 from mainapp.models import Product, ProductCategory
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
