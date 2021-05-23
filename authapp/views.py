@@ -3,7 +3,8 @@ from django.contrib import auth, messages
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
-from django.views.generic.edit import CreateView
+from django.utils.decorators import method_decorator
+from django.views.generic import CreateView, DetailView, UpdateView
 
 from authapp.forms import UserLoginForm, UserRegisterForm, UserProfileForm
 from basketapp.models import Basket
@@ -34,23 +35,40 @@ class Register(CreateView):
         return context
 
 
-@login_required
-def profile(request):
-    if request.method == 'POST':
-        form = UserProfileForm(data=request.POST, instance=request.user, files=request.FILES)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('users:profile'))
-    else:
-        form = UserProfileForm(instance=request.user)
+class ProfileView(UpdateView):
+    model = User
+    template_name = 'authapp/profile.html'
+    form_class = UserProfileForm
+    success_url = reverse_lazy('index')
 
-    context = {
-        'title': 'GeekShop - личный кабинет',
-        'form': form,
-        'baskets': Basket.objects.filter(user=request.user),
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ProfileView, self).dispatch(request, *args, **kwargs)
 
-    }
-    return render(request, 'authapp/profile.html', context)
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(ProfileView, self).get_context_data(**kwargs)
+        context.update({'title': 'GeekShop - Профиль пользователя ' + str(User.objects.get(id=self.kwargs['pk']))})
+        context.update({'baskets': Basket.objects.filter(user=self.kwargs['pk'])})
+        return context
+
+
+# @login_required
+# def profile(request):
+#     if request.method == 'POST':
+#         form = UserProfileForm(data=request.POST, instance=request.user, files=request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponseRedirect(reverse('users:profile'))
+#     else:
+#         form = UserProfileForm(instance=request.user)
+#
+#     context = {
+#         'title': 'GeekShop - личный кабинет',
+#         'form': form,
+#         'baskets': Basket.objects.filter(user=request.user),
+#
+#     }
+#     return render(request, 'authapp/profile.html', context)
 
 
 def logout(request):
