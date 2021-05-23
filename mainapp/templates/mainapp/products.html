@@ -13,7 +13,7 @@
                 <h1 class="my-4">GeekShop</h1>
                 <div class="list-group">
                     {% for catego in category %}
-                    <a href="{% url 'mainapp:product' catego.id %}" class="list-group-item">{{ catego.name }}</a>
+                        <a href="{% url 'mainapp:product' catego.id %}" class="list-group-item">{{ catego.name }}</a>
                     {% endfor %}
 
                 </div>
@@ -56,7 +56,7 @@
                 <div class="row">
 
 
-                    {% for product in products %}
+                    {% for product in object_list %}
                         <div class="col-lg-4 col-md-6 mb-4">
                             <div class="card h-100">
                                 <a href="#">
@@ -73,7 +73,8 @@
                                 </div>
                                 <div class="card-footer text-center">
                                     <a href="{% url 'baskets:basket_add' product.id %}">
-                                        <button type="button" class="btn btn-outline-success">Отправить в корзину</button>
+                                        <button type="button" class="btn btn-outline-success">Отправить в корзину
+                                        </button>
                                     </a>
 
                                 </div>
@@ -81,23 +82,29 @@
                         </div>
                     {% endfor %}
                 </div>
+                {% if page_obj.has_other_pages %}
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <script>console.log('{{ page_obj.number }}')</script>
+                            <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+                                <a class="page-link" href="
 
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center">
-
-                        <li class="page-item {% if not products.has_previous %}disabled{% endif %}">
-                            <a class="page-link" href="{% if products.has_previous %}{% url 'mainapp:page' products.previous_page_number %}{% else %}{% endif %}" tabindex="-1" aria-disabled="true">Previous</a>
-                        </li>
-                        {% for page in products.paginator.page_range %}
-                            <li class="page-item">
-                                <a class="page-link" href="{% url 'mainapp:page' page  %}">{{ page }}</a>
+                                        {% if page_obj.has_previous %}{% url 'mainapp:page' page_obj.previous_page_number %}{% else %}{% endif %}"
+                                   tabindex="-1" aria-disabled="true">Previous</a>
                             </li>
-                        {% endfor %}
-                        <li class="page-item {% if not products.has_next %}disabled{% endif %}">
-                            <a class="page-link" href ="{% if products.has_next %}{% url 'mainapp:page' products.next_page_number %}{% else %}{% endif %}">Next</a>
-                        </li>
-                    </ul>
-                </nav>
+                            {% for page in paginator.page_range %}
+                                <li class="page-item">
+                                    <a class="page-link" href="{% url 'mainapp:page' page %}">{{ page }}</a>
+                                </li>
+                            {% endfor %}
+                            <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                                <a class="page-link" href="
+
+                                        {% if page_obj.has_next %}{% url 'mainapp:page' page_obj.next_page_number %}{% else %}{% endif %}">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                {% endif %}
 
             </div>
 
