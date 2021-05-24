@@ -1,11 +1,10 @@
-from django.shortcuts import render, HttpResponseRedirect
-from django.contrib import auth, messages
+from django.shortcuts import HttpResponseRedirect
+from django.contrib import auth
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, DetailView, UpdateView
-
+from django.views.generic import CreateView, UpdateView
 from authapp.forms import UserLoginForm, UserRegisterForm, UserProfileForm
 from basketapp.models import Basket
 from authapp.models import User
@@ -50,25 +49,6 @@ class ProfileView(UpdateView):
         context.update({'title': 'GeekShop - Профиль пользователя ' + str(User.objects.get(id=self.kwargs['pk']))})
         context.update({'baskets': Basket.objects.filter(user=self.kwargs['pk'])})
         return context
-
-
-# @login_required
-# def profile(request):
-#     if request.method == 'POST':
-#         form = UserProfileForm(data=request.POST, instance=request.user, files=request.FILES)
-#         if form.is_valid():
-#             form.save()
-#             return HttpResponseRedirect(reverse('users:profile'))
-#     else:
-#         form = UserProfileForm(instance=request.user)
-#
-#     context = {
-#         'title': 'GeekShop - личный кабинет',
-#         'form': form,
-#         'baskets': Basket.objects.filter(user=request.user),
-#
-#     }
-#     return render(request, 'authapp/profile.html', context)
 
 
 def logout(request):

@@ -89,6 +89,7 @@
                             <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
                                 <a class="page-link" href="
 
+
                                         {% if page_obj.has_previous %}{% url 'mainapp:page' page_obj.previous_page_number %}{% else %}{% endif %}"
                                    tabindex="-1" aria-disabled="true">Previous</a>
                             </li>
@@ -99,6 +100,7 @@
                             {% endfor %}
                             <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
                                 <a class="page-link" href="
+
 
                                         {% if page_obj.has_next %}{% url 'mainapp:page' page_obj.next_page_number %}{% else %}{% endif %}">Next</a>
                             </li>
