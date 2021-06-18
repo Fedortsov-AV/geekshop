@@ -1,5 +1,9 @@
-from django.shortcuts import HttpResponseRedirect
-from django.contrib import auth
+import logging
+
+from django.conf import settings
+from django.core.mail import send_mail
+from django.shortcuts import HttpResponseRedirect, render
+from django.contrib import auth, messages
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
@@ -22,16 +26,21 @@ class Login(LoginView):
         return context
 
 
-class Register(CreateView):
-    model = User
-    template_name = 'authapp/register.html'
-    success_url = reverse_lazy('authapp:login')
-    form_class = UserRegisterForm
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(Register, self).get_context_data(**kwargs)
-        context.update({'title': 'GeekShop - Регистрация'})
-        return context
+def register(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(data=request.POST)
+        if form.is_valid():
+            user = form.save()
+            messages.success(request, 'Вы успешно зарегистрировались')
+            if send_verify_link(user):
+                logging.debug('send successful')
+            else:
+                logging.error('send failed')
+            return HttpResponseRedirect(reverse('users:login'))
+    else:
+        form = UserRegisterForm()
+    context = {'title': 'GeekShop - Регистрация', 'form': form}
+    return render(request, 'authapp/register.html', context)
 
 
 class ProfileView(UpdateView):
@@ -54,3 +63,21 @@ class ProfileView(UpdateView):
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect(reverse('index'))
+
+
+def send_verify_link(user):
+    verify_link = reverse('authapp:verify', args=[user.email, user.activation_key])
+    subject = 'Account verify'
+    message = f'Your link for account activation: {settings.DOMAIN_NAME}{verify_link}'
+    return send_mail(subject, message, settings.EMAIL_HOST_USER, [user.email], fail_silently=False)
+
+
+def verify(request, email, key):
+    user = User.objects.filter(email=email).first()
+    if user and user.activation_key == key and not user.is_activation_key_expire():
+        user.is_active = True
+        user.activation_key = ''
+        user.activation_key_created = None
+        user.save()
+        Login.as_view(request)
+    return render(request, 'authapp/verify.html')
