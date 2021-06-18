@@ -17,7 +17,6 @@ class ProductView(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ProductView, self).get_context_data(**kwargs)
         context.update({'title': 'GeekShop - товары'})
-        context.update({'category': ProductCategory.objects.all()})
         return context
 
 
@@ -32,5 +31,4 @@ class ProductCategoryView(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ProductCategoryView, self).get_context_data(**kwargs)
         context.update({'title': 'GeekShop - товары'})
-        context.update({'category': ProductCategory.objects.all()})
         return context
