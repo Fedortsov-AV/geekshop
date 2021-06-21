@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'authapp',
     'basketapp',
     'adminapp',
+    'social_django',
 
 ]
 
@@ -154,3 +155,13 @@ EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = 'tmp/email'
 
 DOMAIN_NAME = 'http://127.0.0.1:8000'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.vk.VKOAuth2',
+)
+
+SOCIAL_AUTH_VK_OAUTH2_KEY = '7884287'
+SOCIAL_AUTH_VK_OAUTH2_SECRET = 'bhjtEomglpxjI3bAxBDm'
+
+

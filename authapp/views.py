@@ -2,6 +2,7 @@ import logging
 
 from django.conf import settings
 from django.core.mail import send_mail
+from django.http import request
 from django.shortcuts import HttpResponseRedirect, render
 from django.contrib import auth, messages
 from django.urls import reverse, reverse_lazy
@@ -9,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, UpdateView
-from authapp.forms import UserLoginForm, UserRegisterForm, UserProfileForm
+from authapp.forms import UserLoginForm, UserRegisterForm, UserProfileForm, UserProfileEditForm
 from basketapp.models import Basket
 from authapp.models import User
 
@@ -51,12 +52,14 @@ class ProfileView(UpdateView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        return super(ProfileView, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(ProfileView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context.update({'title': 'GeekShop - Профиль пользователя ' + str(User.objects.get(id=self.kwargs['pk']))})
         context.update({'baskets': Basket.objects.filter(user=self.kwargs['pk'])})
+        profile_form = UserProfileEditForm(instance=self.request.user.userprofile)
+        context.update({'profile_form': profile_form})
         return context
 
 
