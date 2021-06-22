@@ -44,55 +44,53 @@ def register(request):
     return render(request, 'authapp/register.html', context)
 
 
-def edit(request, **kwargs):
-    title = 'GeekShop - Профиль пользователя ' + str(User.objects.get(id=request.user.pk))
-    if request.method == 'POST':
-        profile_form = UserProfileEditForm(request.POST, request.FILES, instance=request.user)
-        edit_form = UserProfileForm(request.POST, instance=request.user.userprofile)
-        if edit_form.is_valid() and profile_form.is_valid():
-            edit_form.save()
+# def edit(request, **kwargs):
+#     title = 'GeekShop - Профиль пользователя ' + str(User.objects.get(id=request.user.pk))
+#     if request.method == 'POST':
+#         edit_form = UserProfileForm(request.POST, request.FILES, instance=request.user)
+#         profile_form = UserProfileEditForm(request.POST,  instance=request.user.userprofile)
+#         if edit_form.is_valid() and profile_form.is_valid():
+#             edit_form.save()
+#             return HttpResponseRedirect(reverse('authapp:profile', args=[request.user.pk]))
+#     else:
+#         edit_form = UserProfileForm(instance=request.user)
+#         profile_form = UserProfileEditForm(instance=request.user.userprofile)
+#
+#     content = {
+#         'title': title,
+#         'baskets': Basket.objects.filter(user=request.user.pk),
+#         'form': edit_form,
+#         'profile_form': profile_form
+#     }
+#     return render(request, 'authapp/profile.html', content)
+
+
+class ProfileView(UpdateView):
+    model = User
+    template_name = 'authapp/profile.html'
+    form_class = UserProfileForm
+    success_url = reverse_lazy('index')
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({'title': 'GeekShop - Профиль пользователя ' + str(User.objects.get(id=self.kwargs['pk']))})
+        context.update({'baskets': Basket.objects.filter(user=self.kwargs['pk'])})
+        profile_form = UserProfileEditForm(instance=self.request.user.userprofile)
+        context.update({'profile_form': profile_form})
+        return context
+
+    def post(self, request, *args, **kwargs):
+        user_form = UserProfileForm(request.POST, request.FILES, instance=request.user)
+        profile_form = UserProfileEditForm(request.POST, instance=request.user.userprofile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
             return HttpResponseRedirect(reverse('authapp:profile', args=[request.user.pk]))
-
-    else:
-        edit_form = UserProfileForm(instance=request.user)
-        profile_form = UserProfileEditForm(instance=request.user.userprofile)
-
-    content = {
-        'title': title,
-        'baskets': Basket.objects.filter(user=request.user.pk),
-        'form': edit_form,
-        'profile_form': profile_form
-    }
-    return render(request, 'authapp/profile.html', content)
-
-
-# class ProfileView(UpdateView):
-#     model = User
-#     template_name = 'authapp/profile.html'
-#     form_class = UserProfileForm
-#     success_url = reverse_lazy('index')
-#
-#     @method_decorator(login_required)
-#     def dispatch(self, request, *args, **kwargs):
-#         return super().dispatch(request, *args, **kwargs)
-#
-#     def get_context_data(self, *, object_list=None, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context.update({'title': 'GeekShop - Профиль пользователя ' + str(User.objects.get(id=self.kwargs['pk']))})
-#         context.update({'baskets': Basket.objects.filter(user=self.kwargs['pk'])})
-#         profile_form = UserProfileEditForm(instance=self.request.user.userprofile)
-#         context.update({'profile_form': profile_form})
-#         return context
-#
-#     def post(self, request, *args, **kwargs):
-#         user_form = UserProfileForm(request.POST, instance=self.request.user)
-#         profile_form = UserProfileEditForm(request.POST, instance=UserProfile.objects.get(user=self.request.user))
-#         if user_form.is_valid() and profile_form.is_valid():
-#             user_form.save()
-#             messages.success(self.request, "Your profile was updated.")
-#             return redirect(reverse('index'))
-#         else:
-#             return super(ProfileView, self).get(request, *args, **kwargs)
+        else:
+            return super(ProfileView, self).get(request, *args, **kwargs)
 
 
 def logout(request):
