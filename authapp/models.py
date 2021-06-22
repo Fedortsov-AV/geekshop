@@ -36,12 +36,12 @@ class UserProfile(models.Model):
 
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
-        print(instance)
+        # print(instance)
         if created:
             UserProfile.objects.create(user=instance)
-            print(instance.userprofile.tagline, '1')
+            # print(instance.userprofile.tagline, '1')
 
     @receiver(post_save, sender=User)
     def save_user_profile(sender, instance, **kwargs):
-        print(instance.userprofile.tagline, '2')
+        # print(instance.userprofile.tagline, '2')
         instance.userprofile.save()
