@@ -20,10 +20,6 @@ def save_user_profile(backend, user, response, *args, **kwargs):
 
     vk_data = vk_response.json()['response'][0]
 
-    # if vk_data['photo_max']:
-    #     print(vk_data['photo_max'])
-    #     user.image = vk_data['photo_max'].url
-
     if vk_data['sex']:
         if vk_data['sex'] == 2:
             user.userprofile.gender = UserProfile.MALE
@@ -43,3 +39,11 @@ def save_user_profile(backend, user, response, *args, **kwargs):
     user.save()
 
 
+def get_avatar(backend, response, user, *args, **kwargs):
+    url = None
+    if backend.name == 'vk-oauth2':
+        url = response.get('photo', '')
+
+    if url:
+        user.image = url
+        user.save()

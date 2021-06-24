@@ -84,8 +84,8 @@ class ProfileView(UpdateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        user_form = UserProfileForm(request.POST, request.FILES, instance=request.user)
-        profile_form = UserProfileEditForm(request.POST, instance=request.user.userprofile)
+        user_form = UserProfileForm(data=request.POST, files=request.FILES, instance=request.user)
+        profile_form = UserProfileEditForm(data=request.POST, instance=request.user.userprofile)
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             return HttpResponseRedirect(reverse('authapp:profile', args=[request.user.pk]))
