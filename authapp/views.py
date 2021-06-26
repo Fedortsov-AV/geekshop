@@ -8,8 +8,8 @@ from django.urls import reverse, reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, UpdateView
-from authapp.forms import UserLoginForm, UserRegisterForm, UserProfileForm
+from django.views.generic import UpdateView
+from authapp.forms import UserLoginForm, UserRegisterForm, UserProfileForm, UserProfileEditForm
 from basketapp.models import Basket
 from authapp.models import User
 
@@ -43,6 +43,27 @@ def register(request):
     return render(request, 'authapp/register.html', context)
 
 
+# def edit(request, **kwargs):
+#     title = 'GeekShop - Профиль пользователя ' + str(User.objects.get(id=request.user.pk))
+#     if request.method == 'POST':
+#         edit_form = UserProfileForm(request.POST, request.FILES, instance=request.user)
+#         profile_form = UserProfileEditForm(request.POST,  instance=request.user.userprofile)
+#         if edit_form.is_valid() and profile_form.is_valid():
+#             edit_form.save()
+#             return HttpResponseRedirect(reverse('authapp:profile', args=[request.user.pk]))
+#     else:
+#         edit_form = UserProfileForm(instance=request.user)
+#         profile_form = UserProfileEditForm(instance=request.user.userprofile)
+#
+#     content = {
+#         'title': title,
+#         'baskets': Basket.objects.filter(user=request.user.pk),
+#         'form': edit_form,
+#         'profile_form': profile_form
+#     }
+#     return render(request, 'authapp/profile.html', content)
+
+
 class ProfileView(UpdateView):
     model = User
     template_name = 'authapp/profile.html'
@@ -51,13 +72,24 @@ class ProfileView(UpdateView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        return super(ProfileView, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(ProfileView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context.update({'title': 'GeekShop - Профиль пользователя ' + str(User.objects.get(id=self.kwargs['pk']))})
         context.update({'baskets': Basket.objects.filter(user=self.kwargs['pk'])})
+        profile_form = UserProfileEditForm(instance=self.request.user.userprofile)
+        context.update({'profile_form': profile_form})
         return context
+
+    def post(self, request, *args, **kwargs):
+        user_form = UserProfileForm(data=request.POST, files=request.FILES, instance=request.user)
+        profile_form = UserProfileEditForm(data=request.POST, instance=request.user.userprofile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            return HttpResponseRedirect(reverse('authapp:profile', args=[request.user.pk]))
+        else:
+            return super(ProfileView, self).get(request, *args, **kwargs)
 
 
 def logout(request):
@@ -79,5 +111,5 @@ def verify(request, email, key):
         user.activation_key = ''
         user.activation_key_created = None
         user.save()
-        Login.as_view(request)
-    return render(request, 'authapp/verify.html')
+        Login.as_view()
+    return HttpResponseRedirect(reverse('index'))
