@@ -1,0 +1,11 @@
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Account verify
+From: django@gb.ru
+To: aleksandrfedorcov431@gmail.com
+Date: Mon, 21 Jun 2021 14:06:50 -0000
+Message-ID: <162428441012.7556.5262844390999321121@Admin-PC>
+
+Your link for account activation: http://127.0.0.1:8000/users/verify/aleksandrfedorcov431@gmail.com/340ee07b47c41bc424a51a73c0d73b5f189cecd3/
+-------------------------------------------------------------------------------
