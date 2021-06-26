@@ -2,17 +2,16 @@ import logging
 
 from django.conf import settings
 from django.core.mail import send_mail
-from django.shortcuts import HttpResponseRedirect, render, redirect
+from django.shortcuts import HttpResponseRedirect, render
 from django.contrib import auth, messages
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.utils.decorators import method_decorator
 from django.views.generic import UpdateView
-from django.views.generic import DetailView
 from authapp.forms import UserLoginForm, UserRegisterForm, UserProfileForm, UserProfileEditForm
 from basketapp.models import Basket
-from authapp.models import User, UserProfile
+from authapp.models import User
 
 
 class Login(LoginView):
