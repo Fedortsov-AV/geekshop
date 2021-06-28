@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import user_passes_test
+from django.forms import inlineformset_factory
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -8,6 +9,8 @@ from django.utils.decorators import method_decorator
 from authapp.models import User
 from adminapp.forms import UserAdminRegisterForm, UserAdminProfileForm, ProductAdminForm
 from mainapp.models import Product
+from ordersapp.forms import OrderItemEditForm, OrderEditForm
+from ordersapp.models import Order, OrderItem
 
 
 class ProductDeleteView(DeleteView):
@@ -38,6 +41,38 @@ class ProductUpdateView(UpdateView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ProductUpdateView, self).get_context_data(**kwargs)
         context.update({'title': 'GeekShop - редактировать товар'})
+        return context
+
+
+class OrderUpdateView(UpdateView):
+    model = Order
+    template_name = 'adminapp/admin-order-update-delete.html'
+    success_url = reverse_lazy('admin_staff:admin_order_read')
+    form_class = OrderEditForm
+
+    @method_decorator(user_passes_test(lambda u: u.is_superuser or u.is_staff))
+    def dispatch(self, request, *args, **kwargs):
+        return super(OrderUpdateView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(OrderUpdateView, self).get_context_data(**kwargs)
+        context.update({'title': 'GeekShop - редактировать заказ'})
+        order = Order.objects.filter(id=self.kwargs['pk'])
+        context.update({'order': order})
+        return context
+
+
+class OrderListView(ListView):
+    model = Order
+    template_name = 'adminapp/admin-order-read.html'
+
+    @method_decorator(user_passes_test(lambda u: u.is_superuser or u.is_staff))
+    def dispatch(self, request, *args, **kwargs):
+        return super(OrderListView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(OrderListView, self).get_context_data(**kwargs)
+        context.update({'title': 'GeekShop - список заказов'})
         return context
 
 

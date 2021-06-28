@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>
+       {% block title %}
+           {{ title|title }}
+       {% endblock %}
+   </title>
+   {% block css %}
+       <link rel="stylesheet" type="text/css" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+       <link rel="stylesheet" type="text/css" href="{% static 'css/products.css' %}">
+       <link rel="stylesheet" href="{% static 'vendor/fontawesome/fontawesome-icons.js' %}">
+       <link href="{% static 'css/auth-admin.css' %}" rel="stylesheet"/>
+   {% endblock %}
+   {% block js %}
+       <!-- Bootstrap core JavaScript -->
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/basket.js' %}"></script>
+
+
+<!-- FontAwesome script -->
+<script src="{% static 'vendor/fontawesome/fontawesome-icons.js' %}" crossorigin="anonymous"></script>
+
+   {% endblock %}
+</head>
+<body>
+  <div class="table table-bordered">
+       {% block content %}
+
+       {% endblock %}
+
+  </div>
+</body>
+</html>
