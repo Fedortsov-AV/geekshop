@@ -14,12 +14,17 @@
                         </div>
 
                         <div class="form-row">
+                            <span>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label class=" mt-md-5" for="{{ form.is_active.id_for_label }}">Активный</label>
-                                    {{ form.is_active }}
+                                    <label class="select2-close-mask media-body mb-1" for="{{ form.is_active.id_for_label }}">Активный</label>
+                                    <div class="btn-group-sm small">
+                                        {{ form.is_active }}
+                                    </div>
+
                                 </div>
                             </div>
+                                </span>
                         </div>
 
                         <div class="form-row">
