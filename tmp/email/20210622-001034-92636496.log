@@ -1,0 +1,11 @@
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Account verify
+From: django@gb.ru
+To: testing@gmail.com
+Date: Mon, 21 Jun 2021 14:10:34 -0000
+Message-ID: <162428463459.11280.5231052850916796065@Admin-PC>
+
+Your link for account activation: http://127.0.0.1:8000/users/verify/testing@gmail.com/606b55d74d69bc099fd1e62832afc4271128c546/
+-------------------------------------------------------------------------------
