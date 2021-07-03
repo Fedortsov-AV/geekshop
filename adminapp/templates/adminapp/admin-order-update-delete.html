@@ -1,0 +1,58 @@
+{% extends 'adminapp/base.html' %}
+{% block content %}
+<h1 class="mt-4">Редактирование заказа пользователя | {{ object.user.first_name }}</h1>
+                <div class="card-body">
+                    <form action="{% url 'adminapp:admin_order_update' object.id %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label class=" change-list mb-1" for="{{ form.status.id_for_label }}">Статус</label>
+                                    {{ form.status }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <span>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="select2-close-mask media-body mb-1" for="{{ form.is_active.id_for_label }}">Активный</label>
+                                    <div class="btn-group-sm small">
+                                        {{ form.is_active }}
+                                    </div>
+
+                                </div>
+                            </div>
+                                </span>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="media mb-1" for="{{ form.instance.created.id_for_label }}">Дата создания</label>
+                                    {{ form.instance.created| date }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="media-body mb-1" for="{{ form.instance.updated.id_for_label }}">Последнее обновление</label>
+                                    {{ form.instance.updated| date }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col-lg-12" style="margin-top: 33px;">
+                                <input class="btn btn-info btn-block" type="submit" value="Сохранить">
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+{% endblock %}
+
