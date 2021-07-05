@@ -33,7 +33,7 @@ window.onload = function () {
         }
     });
 
-    $('.order_form').on('change', 'input[type=checkbox]', function () {
+    $('.order_form').on('click', 'input[type=checkbox]', function () {
         let target = event.target;
         orderitem_num = parseInt(target.name.replace('orderitems-', '').replace('-DELETE', ''));
         if (target.checked) {
