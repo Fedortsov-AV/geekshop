@@ -97,11 +97,9 @@ class OrderUpdate(UpdateView):
         context = self.get_context_data()
         orderitems = context['orderitems']
         with transaction.atomic():
-            form.instance.user = self.request.user
-            self.object.save()
+            self.object = form.save()
             if orderitems.is_valid():
                 orderitems.instance = self.object
-                print(orderitems.instance)
                 orderitems.save()
 
         if self.object.get_total_cost() == 0:
