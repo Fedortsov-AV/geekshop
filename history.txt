@@ -1,94 +1,100 @@
-    1  git --version
-    2  git --global user.name "Fedortsov-AV"
-    3  git config --global user.name "Fedortsov-AV"
-    4  git config --global user.email "aleksandrfedorcov431@gmail.com"
-    5  git config --global color.ui auto
-    6  git config --global core.editor "Sublime"
-    7  git config --list
-    8  ls
-    9  cd D:\JavaScript
-   10  ls
-   11  cd ..
-   12  ls
-   13  ls
-   14  mkdir repo
-   15  ls
-   16  cd repo
-   17  git init
-   18  git status
-   19  git remote add origin https://github.com/Fedortsov-AV/JS.git
-   20  git remote -v
-   21  touch readme.md
-   22  git status
-   23  git add readme.md
-   24  git status
-   25  git commit
-   26  git config --global core.editor "Sublime Text 3"
-   27  git commit
-   28  git config --global core.editor "sublime_text.exe"
-   29  git commit
-   30  git config --list
-   31  cd d:\JS
-   32  git status
-   33  git branch
-   34  git status
-   35  git add .
-   36  git commit -m "Добавлено решение к практическому заданию 3-го урока"
-   37  git statud
-   38  git status
-   39  git push
-   40  git config
-   41  cd d:\JS
-   42  git status
-   43  git checkout -b lesson4
-   44  git status
-   45  git add .
-   46  git commit -m 'Добавлено решение практического задания к 4-му уроку'
-   47  git push
-   48  git push --set-upstream origin lesson4
-   49  git push origin --delete lesson5
-   50  git pull
-   51  git status
-   52  git status
-   53  cd ../JS
-   54  cd ../WaMbot
-   55  git
-   56  git clone https://github.com/Fedortsov-AV/WaMbot.git
-   57  git status
-   58  cd WaMbot
-   59  git checkout -b edit1
-   60  git status
-   61  git add .
-   62  git commit -m 'Добавлен отзыв героев, уменьшена точность кнопки "В поход", В контрольвыхода добавлена проверка рекламы'
-   63  git push
-   64  git push --set-upstream origin edit1
-   65  git status
-   66  git add .
-   67  git commit -m 'Изменения'
-   68  git push
-   69  git status
-   70  git status
-   71  git add lesson6(task1).js
-   72  git add .
-   73  git status
-   74  git status
-   75  git commit -m 'Добавлено практическое задание к первому уроку'
-   76  git add .
-   77  git commit -m 'Добавлено практическое задание к первому уроку'
-   78  git push
-   79  cd D:\\
-   80  mkdir geekshop-server
-   81  cd geekshop-server
-   82  python3 -m venv venv
-   83  git status
-   84  git -b checkout lesson1
-   85  git checkout -b lesson1
-   86  git status
-   87  git add .
-   88  git commit -m "Практическое задание первого урока"
-   89  git push
-   90  git push --set-upstream origin lesson1
-   91  ssh root@
-   92  ssh root@46.183.163.27
-   93  history
-   94  history > history.txt
+    1  ssh-copy-id root@46.183.163.27
+    2  ssh-keygen
+    3  cat /root/.ssh/id_rsa.pub
+    4  apt update
+    5  apt install nginx
+    6  apt install postgresql postgresql-contrib
+    7  apt install python3-venv
+    8  apt install git-core
+    9  nano /etc/postgresql/10/main/pg_hba.conf
+   10  cd /etc/postgresql/
+   11  dir
+   12  nano /etc/postgresql/12/main/pg_hba.conf
+   13  systemctl restart postgresql
+   14  useradd -g www-data -m django
+   15  cd /home/django/
+   16  git clone git@github.com:Fedortsov-AV/geekshop.git
+   17  cd geekshop/
+   18  python3 -m venv env
+   19  source env/bin/activate
+   20  pip3 install -r requirements.txt
+   21  pip3 install gunicorn
+   22  python3 manage.py migrate
+   23  git pull
+   24  nano requirements.txt
+   25  git pull
+   26  nano requirements.txt
+   27  pip3 install -r requirements.txt
+   28  python3 manage.py migrate
+   29  python3 manage.py runserver
+   30  pip install psycopg2
+   31  pip3 install psycopg2
+   32  setup.py cmd --help
+   33  apt-get install python-dev
+   34  apt-get install libpq-dev
+   35  apt-get install python-psycopg2
+   36  apt-get install psycopg2
+   37  pip install psycopg2
+   38  pip uninstall psycopg2
+   39  pip uinstall psycopg2
+   40  apt-get install libpq-dev python-dev python-psycopg2
+   41  python -m pip install psycopg2
+   42  pip install psycopg2-binary
+   43  python3 manage.py migrate
+   44  python3 manage.py makemigrations
+   45  pip3 install gunicorn
+   46  psql -U postgres
+   47  python3 manage.py migrate
+   48  python manage.py loaddata fixtures/goods.json
+   49  python manage.py loaddata goods.json
+   50  python manage.py loaddata categories.json
+   51  python manage.py loaddata goods.json
+   52  python3 manage.py runserver
+   53  python3 manage.py runserver 0.0.0.0:8000
+   54  python3 manage.py runserver
+   55  python3 manage.py --help
+   56  mkdir /etc/systemd/system/gunicorn.service
+   57  nano /etc/systemd/system/gunicorn.service
+   58  mcedit /etc/systemd/system/gunicorn.service
+   59  mKedit /etc/systemd/system/gunicorn.service
+   60  edit /etc/systemd/system/gunicorn.service
+   61  mcedit
+   62  NULL /etc/systemd/system/gunicorn.service
+   63  NULL> /etc/systemd/system/gunicorn.service
+   64  cd /etc/systemd/system
+   65  NULL gunicorn.service
+   66  NULL> gunicorn.service
+   67  del gunicorn.service
+   68  delete gunicorn.service
+   69  rmdir gunicorn.service
+   70  NULL> gunicorn.service
+   71  mcedit gunicorn.service
+   72  cd.> gunicorn.service
+   73  cd. > gunicorn.service
+   74  cd > gunicorn.service
+   75  cd /etc/systemd/system
+   76  dir
+   77  NULL > gunicorn.service
+   78  pip3 install gunicorn
+   79  pip3 uninstall gunicorn
+   80  pip3 install gunicorn
+   81  nano /etc/systemd/system/gunicorn.service
+   82  systemctl enable gunicorn
+   83  systemctl start gunicorn
+   84  systemctl status gunicorn
+   85  systemctl start gunicorn
+   86  systemctl enable gunicorn
+   87  nano /etc/systemd/system/gunicorn.service
+   88  systemctl enable gunicorn
+   89  systemctl start gunicorn
+   90  systemctl status gunicorn
+   91  chown -R django /home/django/
+   92  chmod -R 755 /home/django/geekshop/
+   93  systemctl stop gunicorn
+   94  systemctl start gunicorn
+   95  systemctl status gunicorn
+   96  nano /etc/nginx/sites-available/geekshop
+   97  sudo ln -s /etc/nginx/sites-available/geekshop /etc/nginx/sites-enabled
+   98  sudo nginx -t
+   99  systemctl restart nginx
+  100  history
