@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 
+from basketapp.models import Basket
 from mainapp.models import Product
 
 
@@ -30,6 +31,9 @@ class Order(models.Model):
 
     status = models.CharField(choices=STATUSES, default=FORMING, verbose_name='Статус', max_length=3)
 
+    def __str__(self):
+        return 'Текущий заказ: {}'.format(self.id)
+
     def get_total_quantity(self):
         _items = self.orderitems.select_related()
         _totalquantity = sum(list(map(lambda x: x.quantity, _items)))
@@ -41,13 +45,15 @@ class Order(models.Model):
         return _totalcost
 
     def delete(self):
-        # print(self.orderitems.select_related())
         for item in self.orderitems.select_related():
             item.product.quantity += item.quantity
             item.product.save()
         self.is_active = False
-        # print(self.is_active)
         self.save()
+
+    @staticmethod
+    def get_item(pk):
+        return Order.objects.get(pk=pk)
 
 
 class OrderItem(models.Model):
@@ -57,3 +63,7 @@ class OrderItem(models.Model):
 
     def get_product_cost(self):
         return self.product.price * self.quantity
+
+    @staticmethod
+    def get_item(pk):
+        return OrderItem.objects.get(pk=pk)
