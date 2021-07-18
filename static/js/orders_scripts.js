@@ -20,7 +20,7 @@ window.onload = function () {
         }
     }
 
-    $('.order_form').on('change', 'input[type=number]', function () { //слушает событие на 'click' а 'change', чтобы сумма заказа не возвращало NaN при попытки вписать количество товаров вручную
+    $('.order_form').on('change', 'input[type=number]', function () {  //слушает событие на 'click' а 'change', чтобы сумма заказа не возвращало NaN при попытки вписать количество товаров вручную
         let target = event.target;
         orderitem_num = parseInt(target.name.replace('orderitems-', '').replace('-quantity', ''));
         if (price_arr[orderitem_num]) {
